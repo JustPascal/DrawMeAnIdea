@@ -1,6 +1,6 @@
-testingtable
+Draw me an idea
 ============
 Created : 27 mars 2014
 Done by Pascal Niyitegeka and Yossi Attia
 Project Draw me an idea
-Contains Table
+Updated lately 18 june 2014
