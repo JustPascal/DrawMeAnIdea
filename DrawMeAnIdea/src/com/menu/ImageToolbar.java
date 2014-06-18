@@ -16,6 +16,8 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	PersonnalInternalFrame internalFrame;
+
 	private JButton greenColor;
 
 	private JButton redColor;
@@ -28,9 +30,8 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 
 	private JButton orangeColor;
 
-	private Color color;
-
 	public ImageToolbar(PersonnalInternalFrame internalFrame) {
+		this.internalFrame = internalFrame;
 		// colors
 		greenColor = new JButton("green");
 		redColor = new JButton("red");
@@ -62,28 +63,23 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 
 		if (event.getSource().equals(greenColor)) {
-			color = Color.green;
+			internalFrame.getDrawPanel().setColor(Color.green);
 		}
 		if (event.getSource().equals(redColor)) {
-			color = Color.red;
+			internalFrame.getDrawPanel().setColor(Color.red);
 		}
 		if (event.getSource().equals(blueColor)) {
-			color = Color.blue;
+			internalFrame.getDrawPanel().setColor(Color.blue);
 		}
 		if (event.getSource().equals(yellowColor)) {
-			color = Color.yellow;
+			internalFrame.getDrawPanel().setColor(Color.yellow);
 		}
 		if (event.getSource().equals(grayColor)) {
-			color = Color.GRAY;
+			internalFrame.getDrawPanel().setColor(Color.gray);
 		}
 		if (event.getSource().equals(orangeColor)) {
-			color = Color.orange;
+			internalFrame.getDrawPanel().setColor(Color.orange);
 		}
-
-	}
-
-	public Color getColorForBackGround() {
-		return color;
 
 	}
 
