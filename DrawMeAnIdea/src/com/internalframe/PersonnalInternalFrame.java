@@ -52,6 +52,7 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
 		c.add(imageToolBar.getImageToolbar(), BorderLayout.NORTH);
 		drawPanel = new DrawPanel();
 		drawPanel.addMouseListener(drawPanel);
+		drawPanel.addMouseMotionListener(drawPanel);
 		c.add(drawPanel, BorderLayout.CENTER);
 	}
 

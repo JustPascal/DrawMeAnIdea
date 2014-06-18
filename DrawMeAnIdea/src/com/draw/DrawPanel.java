@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class DrawPanel extends JPanel implements MouseListener {
+public class DrawPanel extends JPanel implements MouseListener,
+		MouseMotionListener {
 
 	/**
 	 * 
@@ -16,6 +19,7 @@ public class DrawPanel extends JPanel implements MouseListener {
 
 	private int X;
 	private int Y;
+	private ArrayList<Point> points = new ArrayList<Point>();
 	private Color color = Color.black; // couleur par défaut
 
 	public DrawPanel() {
@@ -23,19 +27,23 @@ public class DrawPanel extends JPanel implements MouseListener {
 		setSize(200, 200);
 	}
 
+	// cette fonction est lancé quand on modifie la taille de la fenetre
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(color);
-		g.drawLine(X, Y, 0, 0);
+		for (Point point : points) {
+			g.setColor(point.getColor());
+			g.drawOval(point.getX(), point.getY(), 1, 1);
+		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		Graphics g = getGraphics();
 		g.setColor(color);
-		g.drawLine(X, Y, arg0.getX(), arg0.getY());
+		g.drawOval(arg0.getX(), arg0.getY(), 1, 1);
 		X = arg0.getX();
 		Y = arg0.getY();
+		points.add(new Point(X, Y, color));
 	}
 
 	@Override
@@ -64,5 +72,21 @@ public class DrawPanel extends JPanel implements MouseListener {
 
 	public void setColor(Color colorToApply) {
 		this.color = colorToApply;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		Graphics g = getGraphics();
+		g.setColor(color);
+		g.drawOval(e.getX(), e.getY(), 1, 1);
+		X = e.getX();
+		Y = e.getY();
+		points.add(new Point(X, Y, color));
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }
