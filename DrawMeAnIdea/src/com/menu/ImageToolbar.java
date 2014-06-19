@@ -1,6 +1,7 @@
 package com.menu;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,6 +19,8 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 
 	PersonnalInternalFrame internalFrame;
 
+	private JButton saveImageAs;
+
 	private JButton greenColor;
 
 	private JButton redColor;
@@ -31,7 +34,17 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 	private JButton orangeColor;
 
 	public ImageToolbar(PersonnalInternalFrame internalFrame) {
+
+		super();
+
+		Dimension dimension = new Dimension(24, 30);
+
 		this.internalFrame = internalFrame;
+		// save button
+		saveImageAs = new JButton("Save As");
+		saveImageAs.setPreferredSize(dimension);
+		saveImageAs.addActionListener(this);
+
 		// colors
 		greenColor = new JButton("green");
 		redColor = new JButton("red");
@@ -40,6 +53,13 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 		grayColor = new JButton("gray");
 		orangeColor = new JButton("orange");
 
+		greenColor.setPreferredSize(dimension);
+		redColor.setPreferredSize(dimension);
+		blueColor.setPreferredSize(dimension);
+		yellowColor.setPreferredSize(dimension);
+		grayColor.setPreferredSize(dimension);
+		orangeColor.setPreferredSize(dimension);
+
 		greenColor.addActionListener(this);
 		redColor.addActionListener(this);
 		blueColor.addActionListener(this);
@@ -47,6 +67,8 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 		grayColor.addActionListener(this);
 		orangeColor.addActionListener(this);
 
+		add(saveImageAs);
+		addSeparator(dimension);
 		add(greenColor);
 		add(redColor);
 		add(blueColor);
@@ -62,6 +84,9 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
+		if (event.getSource().equals(saveImageAs)) {
+			internalFrame.save(true);
+		}
 		if (event.getSource().equals(greenColor)) {
 			internalFrame.getDrawPanel().setColor(Color.green);
 		}

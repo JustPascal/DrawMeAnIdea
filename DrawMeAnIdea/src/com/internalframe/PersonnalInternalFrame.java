@@ -3,10 +3,15 @@ package com.internalframe;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -14,8 +19,7 @@ import com.draw.DrawPanel;
 import com.mainframe.MainFrame;
 import com.menu.ImageToolbar;
 
-public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
-		InternalFrameListener {
+public class PersonnalInternalFrame extends JInternalFrame implements Runnable, InternalFrameListener {
 	/**
 	 * 
 	 */
@@ -25,8 +29,11 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
 
 	private DrawPanel drawPanel;
 
+	private MainFrame mainFrame;
+
 	public PersonnalInternalFrame(MainFrame mainFrame) {
-		setTitle(nameInternalFrame());
+		this.mainFrame = mainFrame;
+		setTitle("Untitled");
 		setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 
 		addInternalFrameListener(this);
@@ -39,7 +46,7 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension d = tk.getScreenSize();
-		setSize(d.width / 4, d.height / 4);
+		setSize(d.width / 2, d.height / 2);
 		setMaximizable(true);
 		setIconifiable(true);
 		setResizable(true);
@@ -58,12 +65,6 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
 
 	public PersonnalInternalFrame getPersonnalInternalFrame() {
 		return this;
-	}
-
-	private String nameInternalFrame() {
-		String name = JOptionPane
-				.showInputDialog("Donnez un nom à votre image.");
-		return name.length() < 1 ? "Untitled" : name;
 	}
 
 	@Override
@@ -118,5 +119,28 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
 
 	public DrawPanel getDrawPanel() {
 		return drawPanel;
+	}
+
+	public MainFrame getMainFrame() {
+		return mainFrame;
+	}
+
+	public void save(boolean newImage) {
+		if (newImage) {
+			BufferedImage image = new BufferedImage(drawPanel.getSize().width, drawPanel.getSize().height, BufferedImage.TYPE_INT_ARGB);
+			Graphics g = image.createGraphics();
+			drawPanel.paint(g);
+			g.dispose();
+
+			JFileChooser jfc = mainFrame.getFileChooser();
+			if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+				File file = jfc.getSelectedFile();
+				try {
+					ImageIO.write(image, "png", jfc.getSelectedFile());
+				} catch (Exception e) {
+					System.out.println("Erreur lors du tententive d'enregistrement du dessin.");
+				}
+			}
+		}
 	}
 }
