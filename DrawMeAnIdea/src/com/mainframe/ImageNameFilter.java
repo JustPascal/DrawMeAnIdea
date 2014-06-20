@@ -1,7 +1,6 @@
 package com.mainframe;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -9,13 +8,11 @@ public class ImageNameFilter extends FileFilter {
 
 	private String description;
 
-	private ArrayList<String> extensions = new ArrayList<String>();
+	private String extension;
 
 	public ImageNameFilter() {
-		this.description = "format de type jpeg, jpg, png";
-		extensions.add(".jpeg");
-		extensions.add(".jpg");
-		extensions.add(".png");
+		this.description = "image de type .png";
+		this.extension = ".png";
 	}
 
 	@Override
@@ -26,7 +23,7 @@ public class ImageNameFilter extends FileFilter {
 
 		final String fileName = file.getName().toLowerCase();
 
-		if (fileName.endsWith(extensions.get(0)) || fileName.endsWith(extensions.get(1)) || fileName.endsWith(extensions.get(2))) {
+		if (fileName.endsWith(extension)) {
 			return true;
 		}
 		return false;

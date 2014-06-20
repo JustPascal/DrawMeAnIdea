@@ -7,11 +7,11 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -19,7 +19,8 @@ import com.draw.DrawPanel;
 import com.mainframe.MainFrame;
 import com.menu.ImageToolbar;
 
-public class PersonnalInternalFrame extends JInternalFrame implements Runnable, InternalFrameListener {
+public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
+		InternalFrameListener {
 	/**
 	 * 
 	 */
@@ -127,7 +128,8 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable, 
 
 	public void save(boolean newImage) {
 		if (newImage) {
-			BufferedImage image = new BufferedImage(drawPanel.getSize().width, drawPanel.getSize().height, BufferedImage.TYPE_INT_ARGB);
+			BufferedImage image = new BufferedImage(drawPanel.getSize().width,
+					drawPanel.getSize().height, BufferedImage.TYPE_INT_ARGB);
 			Graphics g = image.createGraphics();
 			drawPanel.paint(g);
 			g.dispose();
@@ -136,11 +138,23 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable, 
 			if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 				File file = jfc.getSelectedFile();
 				try {
-					ImageIO.write(image, "png", jfc.getSelectedFile());
+					String extension = checkName(file.getName());
+					ImageIO.write(image, extension, file);
 				} catch (Exception e) {
-					System.out.println("Erreur lors du tententive d'enregistrement du dessin.");
 				}
+				setTitle(file.getName());
 			}
 		}
 	}
+
+	public String checkName(String name) throws Exception {
+		if (name.endsWith(".png"))
+			return "png";
+		else {
+			JOptionPane.showMessageDialog(this,
+					"L'extension de l'image doit être de type .png.");
+			throw new Exception("L'extension de l'image est mauvaise.");
+		}
+	}
+
 }

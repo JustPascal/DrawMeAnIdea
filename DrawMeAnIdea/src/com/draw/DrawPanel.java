@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -21,6 +22,7 @@ public class DrawPanel extends JPanel implements MouseListener,
 	private int Y;
 	private ArrayList<Point> points = new ArrayList<Point>();
 	private Color color = Color.black; // couleur par défaut
+	BufferedImage image = null;
 
 	public DrawPanel() {
 		setBackground(Color.white);
@@ -30,6 +32,9 @@ public class DrawPanel extends JPanel implements MouseListener,
 	// cette fonction est lancé quand on modifie la taille de la fenetre
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		if (image != null) {
+			g.drawImage(image, 0, 0, null);
+		}
 		for (Point point : points) {
 			g.setColor(point.getColor());
 			g.drawOval(point.getX(), point.getY(), 1, 1);
@@ -87,6 +92,11 @@ public class DrawPanel extends JPanel implements MouseListener,
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
+
+	}
+
+	public void setImage(BufferedImage image) {
+		this.image = image;
 
 	}
 }

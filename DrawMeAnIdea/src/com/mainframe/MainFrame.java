@@ -5,12 +5,16 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.ecouteur.PersonnalWindowListener;
 import com.internalframe.PersonnalInternalFrame;
@@ -31,7 +35,8 @@ public class MainFrame extends JFrame {
 
 	private ImageNameFilter imageFilter = new ImageNameFilter();
 
-	private final JFileChooser fileChooser = new JFileChooser(new File(default_file_chooser_Path));
+	private final JFileChooser fileChooser = new JFileChooser(new File(
+			default_file_chooser_Path));
 
 	public MainFrame() {
 		guiFactory();
@@ -65,11 +70,39 @@ public class MainFrame extends JFrame {
 
 	}
 
-	public void addPersonnalIntenalFrameToDeskTop(PersonnalInternalFrame internalFrame) {
+	public void addPersonnalIntenalFrameToDeskTop(
+			PersonnalInternalFrame internalFrame) {
 		desktop.add(internalFrame);
 	}
 
 	public JFileChooser getFileChooser() {
 		return fileChooser;
 	}
+
+	public void openFile() throws Exception {
+		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			PersonnalInternalFrame internalFrame = new PersonnalInternalFrame(
+					this);
+			File file = fileChooser.getSelectedFile();
+			if (file.getName().endsWith(".png")) {
+				BufferedImage img;
+				try {
+					img = ImageIO.read(file);
+					ImageIcon icon = new ImageIcon(img);
+					// internalFrame.getDrawPanel().setIcon();
+					Dimension imageSize = new Dimension(icon.getIconWidth(),
+							icon.getIconHeight());
+					internalFrame.getDrawPanel().setPreferredSize(imageSize);
+					internalFrame.getDrawPanel().setImage(img);
+				} catch (IOException e) {
+				}
+				internalFrame.setTitle(file.getName());
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"L'extension de l'image doit être de type .png.");
+				throw new Exception("L'extension de l'image est mauvaise.");
+			}
+		}
+	}
+
 }

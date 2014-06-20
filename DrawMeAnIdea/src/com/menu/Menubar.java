@@ -27,7 +27,7 @@ public class Menubar extends JMenuBar implements ActionListener {
 
 	private JMenuItem newFile = new JMenuItem("New File");
 
-	private JMenuItem saveFile = new JMenuItem("Save File");
+	private JMenuItem openFile = new JMenuItem("Open File");
 
 	private JMenuItem exitFile = new JMenuItem("Exit File");
 
@@ -36,11 +36,11 @@ public class Menubar extends JMenuBar implements ActionListener {
 		menuBar = new JMenuBar();
 
 		newFile.addActionListener(this);
-		saveFile.addActionListener(this);
 		exitFile.addActionListener(this);
+		openFile.addActionListener(this);
 
 		file.add(newFile);
-		file.add(saveFile);
+		file.add(openFile);
 		file.add(exitFile);
 
 		menuBar.add(file);
@@ -56,14 +56,20 @@ public class Menubar extends JMenuBar implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 
 		if (event.getSource().equals(newFile)) {
-			System.out.println("New File");
 			Thread t = new Thread(new PersonnalInternalFrame(mainFrame));
 			t.start();
 		}
-		if (event.getSource().equals(saveFile))
-			System.out.println("Save File");
-		if (event.getSource().equals(exitFile))
+
+		if (event.getSource().equals(openFile)) {
+			try {
+				mainFrame.openFile();
+			} catch (Exception e) {
+			}
+		}
+
+		if (event.getSource().equals(exitFile)) {
 			System.out.println("Exit File");
+		}
 
 	}
 
