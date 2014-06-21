@@ -12,15 +12,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
 
 import com.draw.DrawPanel;
+import com.ecouteur.DrawInternalFramelistenner;
 import com.mainframe.MainFrame;
 import com.menu.ImageToolbar;
 
-public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
-		InternalFrameListener {
+public class DrawInternalFrame extends JInternalFrame implements Runnable {
 	/**
 	 * 
 	 */
@@ -32,15 +30,16 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
 
 	private MainFrame mainFrame;
 
-	public PersonnalInternalFrame(MainFrame mainFrame) {
+	public DrawInternalFrame(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		setTitle("Untitled");
-		setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 
-		addInternalFrameListener(this);
+		addInternalFrameListener(new DrawInternalFramelistenner(mainFrame));
+		setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
+
 		build();
 
-		mainFrame.addPersonnalIntenalFrameToDeskTop(this);
+		mainFrame.addDrawIntenalFrameToDeskTop(this);
 	}
 
 	public void build() {
@@ -64,7 +63,7 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
 		c.add(drawPanel, BorderLayout.CENTER);
 	}
 
-	public PersonnalInternalFrame getPersonnalInternalFrame() {
+	public DrawInternalFrame getDrawInternalFrame() {
 		return this;
 	}
 
@@ -72,49 +71,7 @@ public class PersonnalInternalFrame extends JInternalFrame implements Runnable,
 	public void run() {
 	}
 
-	@Override
-	public void internalFrameActivated(InternalFrameEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void internalFrameClosed(InternalFrameEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void internalFrameClosing(InternalFrameEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void internalFrameDeactivated(InternalFrameEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void internalFrameDeiconified(InternalFrameEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void internalFrameIconified(InternalFrameEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void internalFrameOpened(InternalFrameEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public ImageToolbar getColorToolBar() {
+	public ImageToolbar getImageToolBar() {
 		return imageToolBar;
 	}
 

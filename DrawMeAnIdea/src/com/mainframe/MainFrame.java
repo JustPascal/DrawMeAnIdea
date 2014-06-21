@@ -8,16 +8,18 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
-import com.ecouteur.PersonnalWindowListener;
-import com.internalframe.PersonnalInternalFrame;
+import com.ecouteur.DrawWindowListener;
+import com.internalframe.DrawInternalFrame;
 import com.menu.Menubar;
 
 public class MainFrame extends JFrame {
@@ -31,6 +33,8 @@ public class MainFrame extends JFrame {
 
 	private JDesktopPane desktop;
 
+	private ArrayList<DrawInternalFrame> internalFrames = new ArrayList<DrawInternalFrame>();
+
 	private String default_file_chooser_Path = "C:/";
 
 	private ImageNameFilter imageFilter = new ImageNameFilter();
@@ -41,7 +45,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		guiFactory();
 
-		PersonnalWindowListener ec = new PersonnalWindowListener();
+		DrawWindowListener ec = new DrawWindowListener();
 		addWindowListener(ec);
 
 		setVisible(true);
@@ -63,16 +67,28 @@ public class MainFrame extends JFrame {
 
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setJMenuBar(menuBar.getMenubar());
+		setJMenuBar(getMenubar());
 
 		desktop.setBackground(Color.lightGray);
 		c.add(desktop, BorderLayout.CENTER);
 
 	}
 
-	public void addPersonnalIntenalFrameToDeskTop(
-			PersonnalInternalFrame internalFrame) {
+	public void addDrawIntenalFrameToDeskTop(DrawInternalFrame internalFrame) {
+		internalFrames.add(internalFrame);
 		desktop.add(internalFrame);
+	}
+
+	public void removeDrawInternalFrameFromList(DrawInternalFrame internalFrame) {
+		internalFrames.remove(internalFrame);
+	}
+
+	public ArrayList<DrawInternalFrame> getInternalFramesInDesktop() {
+		return internalFrames;
+	}
+
+	public JMenuBar getMenubar() {
+		return menuBar.getMenubar();
 	}
 
 	public JFileChooser getFileChooser() {
@@ -81,8 +97,7 @@ public class MainFrame extends JFrame {
 
 	public void openFile() throws Exception {
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			PersonnalInternalFrame internalFrame = new PersonnalInternalFrame(
-					this);
+			DrawInternalFrame internalFrame = new DrawInternalFrame(this);
 			File file = fileChooser.getSelectedFile();
 			if (file.getName().endsWith(".png")) {
 				BufferedImage img;

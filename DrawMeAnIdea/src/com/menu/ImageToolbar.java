@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
-import com.internalframe.PersonnalInternalFrame;
+import com.internalframe.DrawInternalFrame;
 
 public class ImageToolbar extends JToolBar implements ActionListener {
 
@@ -17,7 +17,7 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	PersonnalInternalFrame internalFrame;
+	DrawInternalFrame internalFrame;
 
 	private JButton saveImageAs;
 
@@ -33,7 +33,7 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 
 	private JButton orangeColor;
 
-	public ImageToolbar(PersonnalInternalFrame internalFrame) {
+	public ImageToolbar(DrawInternalFrame internalFrame) {
 
 		super();
 
