@@ -100,9 +100,8 @@ public class Menubar extends JMenuBar implements ActionListener {
 		if (event.getSource().equals(loadPlugin)) {
 			System.out.println("Load Plugin");
 			PluginManager pluginManager = PluginManagerFactory.createPluginManager();
-			pluginManager.addPluginsFrom(new File("bin/").toURI());
+			pluginManager.addPluginsFrom(new File("plugins/").toURI());
 			
-
 			DoUndoPlugin duPluging = pluginManager.getPlugin(DoUndoPlugin.class);
 			duPluging.addMenu(this);
 		}

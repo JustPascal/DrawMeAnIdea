@@ -99,7 +99,8 @@ public class MainFrame extends JFrame {
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			DrawInternalFrame internalFrame = new DrawInternalFrame(this);
 			File file = fileChooser.getSelectedFile();
-			if (file.getName().endsWith(".png")) {
+			if (file.getName().endsWith(".png")
+					|| file.getName().endsWith(".PNG")) {
 				BufferedImage img;
 				try {
 					img = ImageIO.read(file);
@@ -114,7 +115,7 @@ public class MainFrame extends JFrame {
 				internalFrame.setTitle(file.getName());
 			} else {
 				JOptionPane.showMessageDialog(this,
-						"L'extension de l'image doit être de type .png.");
+						"L'extension de l'image doit ÔøΩtre de type .png.");
 				throw new Exception("L'extension de l'image est mauvaise.");
 			}
 		}

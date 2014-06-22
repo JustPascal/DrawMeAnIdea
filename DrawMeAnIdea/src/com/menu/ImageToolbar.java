@@ -81,6 +81,10 @@ public class ImageToolbar extends JToolBar implements ActionListener {
 		return this;
 	}
 
+	public DrawInternalFrame getDrawInternalFrame() {
+		return internalFrame;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
