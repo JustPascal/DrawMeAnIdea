@@ -37,4 +37,17 @@ public class Point {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Point))
+			return false;
+		Point point = (Point) obj;
+
+		if (this.getX() == point.getX())
+			if (this.getY() == point.getY())
+				if (this.getColor() == point.getColor())
+					return true;
+		return false;
+
+	}
 }
