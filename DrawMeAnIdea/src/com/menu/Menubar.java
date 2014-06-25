@@ -3,7 +3,18 @@ package com.menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -73,8 +84,8 @@ public class Menubar extends JMenuBar implements ActionListener {
 	public JMenuBar getMenubar() {
 		return menuBar;
 	}
-	
-	public MainFrame getMainFrame(){
+
+	public MainFrame getMainFrame() {
 		return mainFrame;
 	}
 
@@ -99,13 +110,64 @@ public class Menubar extends JMenuBar implements ActionListener {
 
 		if (event.getSource().equals(loadPlugin)) {
 			System.out.println("Load Plugin");
-			PluginManager pluginManager = PluginManagerFactory.createPluginManager();
-			pluginManager.addPluginsFrom(new File("plugins/").toURI());
-			
-			DoUndoPlugin duPluging = pluginManager.getPlugin(DoUndoPlugin.class);
-			duPluging.addMenu(this);
+			// PluginManager pluginManager = PluginManagerFactory
+			// .createPluginManager();
+			// pluginManager.addPluginsFrom(new File("plugins/").toURI());
+
+			// DoUndoPlugin duPluging = pluginManager
+			// .getPlugin(DoUndoPlugin.class);
+			// duPluging.addMenu(this);
+			// System.out.println(DoUndoPlugin.class);
+
+			String pathToJar = "/Users/pascal/Desktop/plugins/doRedo.jar";
+			JarFile jarFile = null;
+			try {
+				jarFile = new JarFile(pathToJar);
+				Enumeration e = jarFile.entries();
+				URL[] urls = { new URL("jar:file:" + pathToJar + "!/") };
+				URLClassLoader cl = URLClassLoader.newInstance(urls);
+				while (e.hasMoreElements()) {
+					JarEntry je = (JarEntry) e.nextElement();
+					System.out.println("___" + je.getName());
+					if (je.isDirectory() || !je.getName().endsWith(".class")) {
+						continue;
+					}
+					String className = je.getName().substring(0,
+							je.getName().length() - 6);
+					className = className.replace('/', '.');
+					if (className.contains("Impl")) {
+						System.out.println("Class ends with impl ==>"
+								+ className);
+						Class<?> c = cl.loadClass(className);
+						for (Method uneMethode : c.getDeclaredMethods()) {
+							if (uneMethode.getName().equals("addMenu")) {
+								System.out.println(" Methode Name : "
+										+ uneMethode.getName());
+								uneMethode.setAccessible(true);
+								Object t = c.newInstance();
+								uneMethode.invoke(t, this);
+							}
+						}
+					}
+				}
+			} catch (IOException e) {
+				System.out.println(" Error found : " + e.getMessage());
+			} catch (ClassNotFoundException e1) {
+				System.out.println(" Class not found : " + e1.getMessage());
+			} catch (SecurityException e1) {
+				System.out.println("Error Security" + e1.getMessage());
+			} catch (InstantiationException e1) {
+				System.out.println(" Error Instanciation : " + e1.getMessage());
+			} catch (IllegalAccessException e1) {
+				System.out
+						.println(" Error Illegal Access : " + e1.getMessage());
+				e1.printStackTrace();
+			} catch (InvocationTargetException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 		}
 
 	}
-	
 }
