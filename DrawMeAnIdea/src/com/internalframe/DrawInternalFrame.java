@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import com.draw.DrawPanel;
 import com.ecouteur.DrawInternalFramelistenner;
 import com.mainframe.MainFrame;
-import com.menu.ImageToolbar;
+import com.menu.DrawToolbar;
 
 public class DrawInternalFrame extends JInternalFrame implements Runnable {
 	/**
@@ -24,7 +24,7 @@ public class DrawInternalFrame extends JInternalFrame implements Runnable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private ImageToolbar imageToolBar;
+	private DrawToolbar drawToolbar;
 
 	private DrawPanel drawPanel;
 
@@ -55,8 +55,8 @@ public class DrawInternalFrame extends JInternalFrame implements Runnable {
 
 		Container c = getContentPane();
 
-		imageToolBar = new ImageToolbar(this);
-		c.add(imageToolBar.getImageToolbar(), BorderLayout.NORTH);
+		drawToolbar = new DrawToolbar(this);
+		c.add(drawToolbar.getDrawToolbar(), BorderLayout.NORTH);
 		drawPanel = new DrawPanel();
 		drawPanel.addMouseListener(drawPanel);
 		drawPanel.addMouseMotionListener(drawPanel);
@@ -71,8 +71,8 @@ public class DrawInternalFrame extends JInternalFrame implements Runnable {
 	public void run() {
 	}
 
-	public ImageToolbar getImageToolBar() {
-		return imageToolBar;
+	public DrawToolbar getDrawToolBar() {
+		return drawToolbar;
 	}
 
 	public DrawPanel getDrawPanel() {
@@ -83,24 +83,22 @@ public class DrawInternalFrame extends JInternalFrame implements Runnable {
 		return mainFrame;
 	}
 
-	public void save(boolean newImage) {
-		if (newImage) {
-			BufferedImage image = new BufferedImage(drawPanel.getSize().width,
-					drawPanel.getSize().height, BufferedImage.TYPE_INT_ARGB);
-			Graphics g = image.createGraphics();
-			drawPanel.paint(g);
-			g.dispose();
+	public void save() {
+		BufferedImage image = new BufferedImage(drawPanel.getSize().width, drawPanel.getSize().height, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = image.createGraphics();
+		drawPanel.paint(g);
+		g.dispose();
 
-			JFileChooser jfc = mainFrame.getFileChooser();
-			if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				File file = jfc.getSelectedFile();
-				try {
-					String extension = checkName(file.getName());
-					ImageIO.write(image, extension, file);
-				} catch (Exception e) {
-				}
-				setTitle(file.getName());
+		JFileChooser jfc = mainFrame.getFileChooser();
+		if (jfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			File file = jfc.getSelectedFile();
+			try {
+				String extension = checkName(file.getName());
+				ImageIO.write(image, extension, file);
+			} catch (Exception e) {
 			}
+			setTitle(file.getName());
+
 		}
 	}
 
@@ -108,8 +106,7 @@ public class DrawInternalFrame extends JInternalFrame implements Runnable {
 		if (name.endsWith(".png"))
 			return "png";
 		else {
-			JOptionPane.showMessageDialog(this,
-					"L'extension de l'image doit être de type .png.");
+			JOptionPane.showMessageDialog(this, "L'extension de l'image doit ÔøΩtre de type .png.");
 			throw new Exception("L'extension de l'image est mauvaise.");
 		}
 	}

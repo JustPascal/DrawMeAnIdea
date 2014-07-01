@@ -23,7 +23,7 @@ public class PluginLoader {
 
 	private void init(Menubar menubar) {
 		JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new File("/Users/pascal/Desktop/plugins"));
+		fc.setCurrentDirectory(new File("c:/"));
 		fc.setDialogTitle("Choisir plugin");
 		fc.setFileFilter(new FileNameExtensionFilter("JAR", "jar"));
 		if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {

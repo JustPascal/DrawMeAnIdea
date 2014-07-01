@@ -10,8 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class DrawPanel extends JPanel implements MouseListener,
-		MouseMotionListener {
+public class DrawPanel extends JPanel implements MouseListener, MouseMotionListener {
 
 	/**
 	 * 
@@ -20,14 +19,26 @@ public class DrawPanel extends JPanel implements MouseListener,
 
 	private ArrayList<Point> pointsToRemove = new ArrayList<Point>();
 
-	private int X;
-	private int Y;
-	int width = 900;
-	int height = 900;
-	int type = BufferedImage.TYPE_INT_ARGB;
-	private ArrayList<Point> points = new ArrayList<Point>();
+	private int X = 0;
+
+	private int Y = 0;
+
 	private Color color;
+
+	private int dotLineSize = 1;
+
+	private String dotLineforme = "circle";
+
+	private static final int width = 900;
+
+	private static final int height = 900;
+
+	private int type = BufferedImage.TYPE_INT_ARGB;
+
+	private ArrayList<Point> points = new ArrayList<Point>();
+
 	private BufferedImage originalImage;
+
 	private Graphics gprevGraphics, gnextGraphics;
 
 	public DrawPanel() {
@@ -47,10 +58,8 @@ public class DrawPanel extends JPanel implements MouseListener,
 
 	public void init() {
 		// graphics
-		gprevGraphics = new BufferedImage(width, height, type).getGraphics()
-				.create();
-		gnextGraphics = new BufferedImage(width, height, type).getGraphics()
-				.create();
+		gprevGraphics = new BufferedImage(width, height, type).getGraphics().create();
+		gnextGraphics = new BufferedImage(width, height, type).getGraphics().create();
 	}
 
 	// cette fonction est lancer quand on modifie la taille de la fenetre
@@ -61,19 +70,29 @@ public class DrawPanel extends JPanel implements MouseListener,
 		}
 		for (Point point : points) {
 			g.setColor(point.getColor());
-			g.drawOval(point.getX(), point.getY(), 1, 1);
+			int pointSize = point.getDotLineSize();
+			if (point.getDotLineForme().equals("circle")) {
+				g.fillOval(point.getX(), point.getY(), pointSize, pointSize);
+			} else {
+				g.fillRect(point.getX(), point.getY(), pointSize, pointSize);
+			}
 		}
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-
+	public void mouseClicked(MouseEvent e) {
+		setPointsToRemove();
 		Graphics g = getGraphics();
 		g.setColor(color);
-		g.drawOval(arg0.getX(), arg0.getY(), 1, 1);
-		X = arg0.getX();
-		Y = arg0.getY();
-		points.add(new Point(X, Y, color));
+		if (dotLineforme.equals("circle")) {
+			g.fillOval(e.getX(), e.getY(), dotLineSize, dotLineSize);
+		} else {
+			g.fillRect(e.getX(), e.getY(), dotLineSize, dotLineSize);
+		}
+		X = e.getX();
+		Y = e.getY();
+		points.add(new Point(X, Y, color, dotLineSize, dotLineforme));
+		pointsToRemove.add(new Point(X, Y, color, dotLineSize, dotLineforme));
 	}
 
 	@Override
@@ -110,11 +129,15 @@ public class DrawPanel extends JPanel implements MouseListener,
 		gprevGraphics = getGraphics().create();
 		Graphics g = getGraphics();
 		g.setColor(color);
-		g.drawOval(e.getX(), e.getY(), 1, 1);
+		if (dotLineforme.equals("circle")) {
+			g.fillOval(e.getX(), e.getY(), dotLineSize, dotLineSize);
+		} else {
+			g.fillRect(e.getX(), e.getY(), dotLineSize, dotLineSize);
+		}
 		X = e.getX();
 		Y = e.getY();
-		points.add(new Point(X, Y, color));
-		pointsToRemove.add(new Point(X, Y, color));
+		points.add(new Point(X, Y, color, dotLineSize, dotLineforme));
+		pointsToRemove.add(new Point(X, Y, color, dotLineSize, dotLineforme));
 	}
 
 	@Override
@@ -152,6 +175,22 @@ public class DrawPanel extends JPanel implements MouseListener,
 
 	public Graphics getNextGraphics() {
 		return gnextGraphics;
+	}
+
+	public int getDotLineSize() {
+		return dotLineSize;
+	}
+
+	public void setDotLineSize(int dotLineSize) {
+		this.dotLineSize = dotLineSize;
+	}
+
+	public String getDotLineforme() {
+		return dotLineforme;
+	}
+
+	public void setDotLineforme(String dotLineforme) {
+		this.dotLineforme = dotLineforme;
 	}
 
 }
