@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class DrawPanel extends JPanel implements MouseListener, MouseMotionListener {
+public class DrawPanel extends JPanel implements MouseListener,
+		MouseMotionListener {
 
 	/**
 	 * 
@@ -58,8 +59,10 @@ public class DrawPanel extends JPanel implements MouseListener, MouseMotionListe
 
 	public void init() {
 		// graphics
-		gprevGraphics = new BufferedImage(width, height, type).getGraphics().create();
-		gnextGraphics = new BufferedImage(width, height, type).getGraphics().create();
+		gprevGraphics = new BufferedImage(width, height, type).getGraphics()
+				.create();
+		gnextGraphics = new BufferedImage(width, height, type).getGraphics()
+				.create();
 	}
 
 	// cette fonction est lancer quand on modifie la taille de la fenetre
